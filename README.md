@@ -52,7 +52,7 @@ korzystaja z modelu Groq. Klucz jest darmowy: https://console.groq.com/keys.
 Aplikacja dziala tez bez klucza (skan, wyszukiwanie, dane produktu), ale funkcje
 AI zglaszaja wtedy "Brak klucza API". Klucza nie commituj do repozytorium.
 
-Dla Dockera utworz w katalogu projektu plik `.env` (jest ignorowany przez git):
+Dla Dockera utworz w katalogu projektu plik `.env`:
 
 ```
 GROQ_API_KEY=twoj_klucz
@@ -60,7 +60,7 @@ GROQ_API_KEY=twoj_klucz
 
 `docker compose up --build` sam go wczyta.
 
-## Budowanie ze zrodel (Flutter) - dla programistow
+## Budowanie ze zrodel (Flutter)
 
 Jesli chcesz uruchomic aplikacje bez Dockera albo zbudowac wlasny APK, potrzebny
 jest Flutter 3.44.4 (stable). Ponizej dwie kompletne sciezki - wybierz swoja
@@ -99,17 +99,6 @@ flutter pub get
 flutter run -d chrome --dart-define=GROQ_API_KEY=twoj_klucz
 ```
 
-Uwaga: PATH ustawiony wyzej dziala tylko w biezacej sesji. Aby byl trwaly, dodaj
-katalog `flutter/bin` do zmiennej PATH systemu (Windows) lub do `~/.bashrc`
-(Linux/macOS).
-
-### Wlasny APK na telefon
-
-```
-flutter build apk --release --dart-define=GROQ_API_KEY=twoj_klucz
-```
-Plik: `build/app/outputs/flutter-apk/app-release.apk`. Do budowy na Androida
-potrzebny jest Android SDK (Android Studio) i `flutter doctor --android-licenses`.
 
 ## Testy i jakosc kodu
 
