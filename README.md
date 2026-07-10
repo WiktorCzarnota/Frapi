@@ -162,6 +162,45 @@ flutter analyze     # statyczna analiza / lint
 dart format .       # formatowanie
 ```
 
+## Sprawdzenie w Dockerze (opcjonalnie)
+
+Docker pozwala uruchomic webowa wersje aplikacji bez instalowania Fluttera na
+komputerze. Wymaga zainstalowanego Dockera (Windows: Docker Desktop). Komendy sa
+takie same w PowerShell i Bash.
+
+### Uruchomienie aplikacji (web) w kontenerze
+
+W katalogu projektu (jest tu `Dockerfile`):
+
+```
+docker build --build-arg GROQ_API_KEY=twoj_klucz -t frapi-web .
+docker run --rm -p 8080:80 frapi-web
+```
+
+Nastepnie otworz http://localhost:8080. Skan kamera dziala, bo `localhost` jest
+traktowany przez przegladarke jako bezpieczny kontekst. Klucz Groq zostaje
+wkompilowany w wersje web - uzywaj tego tylko lokalnie i nie publikuj obrazu.
+
+### Sama weryfikacja kodu (testy + analiza), bez uruchamiania
+
+PowerShell:
+
+```powershell
+docker run --rm -v "${PWD}:/app" -w /app ghcr.io/cirruslabs/flutter:3.44.4 `
+  sh -c "git config --global --add safe.directory /app && flutter pub get && flutter analyze && flutter test"
+```
+
+Bash:
+
+```bash
+docker run --rm -v "$(pwd):/app" -w /app ghcr.io/cirruslabs/flutter:3.44.4 \
+  sh -c "git config --global --add safe.directory /app && flutter pub get && flutter analyze && flutter test"
+```
+
+Uwaga: ta komenda montuje biezacy katalog, wiec jego sciezka nie moze zawierac
+spacji - uruchamiaj ja z repozytorium sklonowanego do katalogu bez spacji
+(np. `C:\frapi`).
+
 ## Znane ograniczenia
 
 - Klucz API w aplikacji mobilnej nie jest w pelni bezpieczny; docelowo serwer
