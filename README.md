@@ -35,6 +35,7 @@ skan kodu / wyszukanie / zdjecie etykiety
 
 Funkcje AI (analiza, zamienniki, odczyt etykiety, podsumowanie porownania)
 wymagaja klucza Groq. Klucz jest darmowy i dziala w Polsce bez karty.
+NIE jest to wymagane do działąnia aplikacji, ale nie działa dużo kluczowych funkcji.
 
 1. Zaloz konto i wygeneruj klucz: https://console.groq.com/keys
 2. Klucz podajesz przy uruchomieniu przez `--dart-define=GROQ_API_KEY=...`
