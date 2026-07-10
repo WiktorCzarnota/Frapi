@@ -40,9 +40,6 @@ wymagaja klucza Groq. Klucz jest darmowy i dziala w Polsce bez karty.
 2. Klucz podajesz przy uruchomieniu przez `--dart-define=GROQ_API_KEY=...`
    (w komendach ponizej wstawiasz go zamiast `twoj_klucz`).
 
-WAZNE: klucza nie umieszczaj w kodzie ani w repozytorium. Podawaj go tylko w
-komendzie uruchomieniowej. Bez klucza aplikacja dziala (skan, wyszukiwanie,
-dane produktu), ale funkcje AI zglaszaja "Brak klucza API".
 
 ## Uruchomienie od zera
 
@@ -127,19 +124,6 @@ Uwagi (Bash):
 Wymaga zainstalowanego Android SDK (dociaga je Android Studio) oraz akceptacji
 licencji: `flutter doctor --android-licenses`.
 
-### Wariant 1: przez USB (z hot reload)
-
-1. W telefonie wlacz Opcje programistyczne (7x stuknij "Numer kompilacji")
-   i wlacz "Debugowanie USB".
-2. Podlacz telefon kablem, na telefonie zezwol na debugowanie USB.
-3. Sprawdz i uruchom:
-   ```
-   flutter devices
-   flutter run -d <id-telefonu> --dart-define=GROQ_API_KEY=twoj_klucz
-   ```
-
-### Wariant 2: plik APK (gdy USB-install jest zablokowany, np. MIUI/Xiaomi bez SIM)
-
 1. Zbuduj APK z kluczem:
    ```
    flutter build apk --release --dart-define=GROQ_API_KEY=twoj_klucz
@@ -147,12 +131,6 @@ licencji: `flutter doctor --android-licenses`.
 2. Plik powstanie w `build/app/outputs/flutter-apk/app-release.apk`.
 3. Przerzuc go na telefon (kabel w trybie MTP albo Dysk Google) i zainstaluj,
    zezwalajac menedzerowi plikow na instalacje z nieznanych zrodel.
-4. Kolejne aktualizacje: ten sam build nadpisuje plik; instalacja "na wierzch"
-   zachowuje dane (profil, historia).
-
-Przy pierwszym uruchomieniu aplikacja poprosi o zgode na aparat (skan kodu,
-zdjecie etykiety). W trakcie dzialania: `r` = hot reload, `R` = hot restart,
-`q` = wyjscie.
 
 ## Testy i jakosc kodu
 
@@ -162,10 +140,3 @@ flutter analyze     # statyczna analiza / lint
 dart format .       # formatowanie
 ```
 
-## Znane ograniczenia
-
-- Klucz API w aplikacji mobilnej nie jest w pelni bezpieczny; docelowo serwer
-  proxy (poza zakresem MVP).
-- Open Food Facts miewa niepelne dane, a polskie produkty bywaja slabo pokryte -
-  stad opcja dodania produktu ze zdjecia etykiety.
-- Skan kodu kamera dziala na Androidzie i w przegladarce; nie na Windows desktop.
