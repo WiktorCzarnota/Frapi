@@ -1,0 +1,33 @@
+# Sekrety / klucze API (NIGDY nie commitować)
+*.env
+.env*
+**/secrets.dart
+**/api_keys.dart
+**/*secret*
+**/*apikey*
+
+# Flutter / Dart (gdy powstanie projekt)
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+**/doc/api/
+*.lock.bak
+
+# Lokalne pliki IDE / systemowe
+.idea/
+*.iml
+.vscode/*
+!.vscode/settings.json
+.DS_Store
+Thumbs.db
+
+# Claude Code lokalne ustawienia użytkownika
+.claude/settings.local.json
+
+# Materialy pracy dyplomowej (czesc pisemna) - trzymane lokalnie, nie w repo aplikacji
+/CLAUDE.md
+/praca-dyplomowa/
