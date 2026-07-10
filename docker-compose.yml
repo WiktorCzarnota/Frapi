@@ -1,0 +1,10 @@
+services:
+  frapi:
+    build:
+      context: .
+      args:
+        # Klucz wczytywany z pliku .env (GROQ_API_KEY=...). Bez niego aplikacja
+        # dziala, ale funkcje AI zglaszaja "Brak klucza API".
+        GROQ_API_KEY: ${GROQ_API_KEY:-}
+    ports:
+      - "8080:80"
