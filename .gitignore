@@ -1,6 +1,8 @@
 # Sekrety / klucze API (NIGDY nie commitować)
 *.env
 .env*
+*.key
+groq.key
 **/secrets.dart
 **/api_keys.dart
 **/*secret*
