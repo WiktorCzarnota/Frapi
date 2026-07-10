@@ -31,6 +31,107 @@ skan kodu / wyszukanie / zdjecie etykiety
 - Darmowy klucz API Groq (patrz nizej).
 - Do testow na Androidzie: Android SDK (instalowane wraz z Android Studio).
 
+## Uruchomienie od zera - krok po kroku
+
+Pelna sciezka od czystego komputera do dzialajacej aplikacji. Komendy podano dla
+dwoch powlok: PowerShell (Windows) oraz Bash (Git Bash na Windows, Linux, macOS).
+Same komendy Fluttera sa identyczne w obu - rozni sie glownie instalacja i
+ustawianie zmiennej PATH.
+
+### 1. Zainstaluj Git
+
+- Windows: https://git-scm.com/download/win (zawiera tez Git Bash)
+- Linux: `sudo apt install git`
+- macOS: `brew install git`
+
+Sprawdzenie: `git --version`
+
+### 2. Sklonuj repozytorium
+
+To samo w PowerShell i Bash (podmien adres na adres swojego repozytorium):
+
+```
+git clone https://github.com/WiktorCzarnota/frapi.git
+cd frapi
+```
+
+### 3. Pobierz Flutter z internetu
+
+Najprosciej pobrac stabilny kanal Fluttera przez Git.
+
+PowerShell (Windows):
+
+```powershell
+git clone https://github.com/flutter/flutter.git -b stable "$HOME\flutter"
+$env:Path = "$HOME\flutter\bin;$env:Path"
+```
+
+Aby PATH dzialal w kazdym nowym oknie, dodaj `%USERPROFILE%\flutter\bin` do
+zmiennej srodowiskowej Path (Ustawienia Windows -> "Edytuj zmienne srodowiskowe").
+
+Bash (Git Bash / Linux / macOS):
+
+```bash
+git clone https://github.com/flutter/flutter.git -b stable "$HOME/flutter"
+export PATH="$HOME/flutter/bin:$PATH"
+```
+
+Aby PATH byl trwaly, dopisz linie `export PATH=...` do `~/.bashrc` (lub `~/.zshrc`).
+
+Alternatywa (Windows, bez Gita): pobierz gotowy ZIP ze strony
+https://docs.flutter.dev/get-started/install/windows, rozpakuj np. do
+`C:\src\flutter` i dodaj `C:\src\flutter\bin` do Path.
+
+Sprawdzenie instalacji (obie powloki):
+
+```
+flutter --version
+flutter doctor
+```
+
+`flutter doctor` wypisze, czego jeszcze brakuje. Do budowy na Androida potrzebny
+jest Android SDK - instaluje sie go razem z Android Studio
+(https://developer.android.com/studio), a licencje akceptuje komenda
+`flutter doctor --android-licenses`. Do uruchomienia w przegladarce ani na Windows
+desktop Android SDK nie jest potrzebny.
+
+### 4. Pobierz zaleznosci projektu
+
+W katalogu projektu (obie powloki):
+
+```
+flutter pub get
+```
+
+### 5. Przygotuj klucz API Groq
+
+Klucz jest darmowy (https://console.groq.com/keys) i wymagany do funkcji AI.
+Podajesz go przy uruchamianiu przez `--dart-define` (patrz krok 6 oraz sekcja
+"Klucz API (Groq)" nizej).
+
+### 6. Uruchom aplikacje
+
+Najszybciej w przegladarce Chrome (komenda taka sama w PowerShell i Bash):
+
+```
+flutter run -d chrome --dart-define=GROQ_API_KEY=twoj_klucz
+```
+
+Windows desktop:
+
+```
+flutter run -d windows --dart-define=GROQ_API_KEY=twoj_klucz
+```
+
+Telefon z Androidem (po instalacji Android SDK i wlaczeniu debugowania USB):
+
+```
+flutter run -d <id-telefonu> --dart-define=GROQ_API_KEY=twoj_klucz
+```
+
+Liste podlaczonych urzadzen pokaze `flutter devices`. Szczegoly instalacji na
+telefonie (w tym wariant z plikiem APK) sa w sekcji "Uruchomienie na telefonie".
+
 ## Klucz API (Groq) - wymagany do funkcji AI
 
 Funkcje AI (analiza, zamienniki, odczyt etykiety, podsumowanie porownania)
