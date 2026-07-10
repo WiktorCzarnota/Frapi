@@ -27,114 +27,9 @@ skan kodu / wyszukanie / zdjecie etykiety
 
 ## Wymagania
 
-- Flutter 3.44.4 (stable), Dart 3.12.2.
+- Git oraz Flutter 3.44.4 (stable), Dart 3.12.2 - instalacja opisana ponizej.
 - Darmowy klucz API Groq (patrz nizej).
-- Do testow na Androidzie: Android SDK (instalowane wraz z Android Studio).
-
-## Uruchomienie od zera - krok po kroku
-
-Pelna sciezka od czystego komputera do dzialajacej aplikacji. Komendy podano dla
-dwoch powlok: PowerShell (Windows) oraz Bash (Git Bash na Windows, Linux, macOS).
-Same komendy Fluttera sa identyczne w obu - rozni sie glownie instalacja i
-ustawianie zmiennej PATH.
-
-### Klucz API (Groq) - wymagany do funkcji AI
-
-Funkcje AI (analiza, zamienniki, odczyt etykiety, podsumowanie porownania)
-wymagaja klucza Groq. Klucz jest darmowy i dziala w Polsce bez karty.
-
-1. Zaloz konto i wygeneruj klucz: https://console.groq.com/keys
-2. Klucz podajesz przy uruchomieniu przez `--dart-define=GROQ_API_KEY=...`.
-
-WAZNE: klucza nie umieszczaj w kodzie ani w repozytorium. Podawaj go tylko w
-komendzie uruchomieniowej. Bez klucza aplikacja dziala (skan, wyszukiwanie,
-dane produktu), ale funkcje AI zglaszaja "Brak klucza API".
-
-### 1. Sklonuj repozytorium
-
-To samo w PowerShell i Bash (podmien adres na adres swojego repozytorium):
-
-```
-git clone https://github.com/WiktorCzarnota/frapi.git
-cd frapi
-```
-
-### 2. Pobierz Flutter z internetu
-
-Najprosciej pobrac stabilny kanal Fluttera przez Git.
-
-PowerShell (Windows):
-
-```powershell
-git clone https://github.com/flutter/flutter.git -b stable "$HOME\flutter"
-$env:Path = "$HOME\flutter\bin;$env:Path"
-```
-
-Aby PATH dzialal w kazdym nowym oknie, dodaj `%USERPROFILE%\flutter\bin` do
-zmiennej srodowiskowej Path (Ustawienia Windows -> "Edytuj zmienne srodowiskowe").
-
-Bash (Git Bash / Linux / macOS):
-
-```bash
-git clone https://github.com/flutter/flutter.git -b stable "$HOME/flutter"
-export PATH="$HOME/flutter/bin:$PATH"
-```
-
-Aby PATH byl trwaly, dopisz linie `export PATH=...` do `~/.bashrc` (lub `~/.zshrc`).
-
-Alternatywa (Windows, bez Gita): pobierz gotowy ZIP ze strony
-https://docs.flutter.dev/get-started/install/windows, rozpakuj np. do
-`C:\src\flutter` i dodaj `C:\src\flutter\bin` do Path.
-
-Sprawdzenie instalacji (obie powloki):
-
-```
-flutter --version
-flutter doctor
-```
-
-`flutter doctor` wypisze, czego jeszcze brakuje. Do budowy na Androida potrzebny
-jest Android SDK - instaluje sie go razem z Android Studio
-(https://developer.android.com/studio), a licencje akceptuje komenda
-`flutter doctor --android-licenses`. Do uruchomienia w przegladarce ani na Windows
-desktop Android SDK nie jest potrzebny.
-
-### 3. Pobierz zaleznosci projektu
-
-W katalogu projektu (obie powloki):
-
-```
-flutter pub get
-```
-
-### 4. Przygotuj klucz API Groq
-
-Klucz jest darmowy (https://console.groq.com/keys) i wymagany do funkcji AI.
-Podajesz go przy uruchamianiu przez `--dart-define` (patrz krok 6 oraz sekcja
-"Klucz API (Groq)" nizej).
-
-### 5. Uruchom aplikacje
-
-Najszybciej w przegladarce Chrome (komenda taka sama w PowerShell i Bash):
-
-```
-flutter run -d chrome --dart-define=GROQ_API_KEY=twoj_klucz
-```
-
-Windows desktop:
-
-```
-flutter run -d windows --dart-define=GROQ_API_KEY=twoj_klucz
-```
-
-Telefon z Androidem (po instalacji Android SDK i wlaczeniu debugowania USB):
-
-```
-flutter run -d <id-telefonu> --dart-define=GROQ_API_KEY=twoj_klucz
-```
-
-Liste podlaczonych urzadzen pokaze `flutter devices`. Szczegoly instalacji na
-telefonie (w tym wariant z plikiem APK) sa w sekcji "Uruchomienie na telefonie".
+- Do budowy/testow na Androidzie: Android SDK (instalowane wraz z Android Studio).
 
 ## Klucz API (Groq) - wymagany do funkcji AI
 
@@ -142,49 +37,102 @@ Funkcje AI (analiza, zamienniki, odczyt etykiety, podsumowanie porownania)
 wymagaja klucza Groq. Klucz jest darmowy i dziala w Polsce bez karty.
 
 1. Zaloz konto i wygeneruj klucz: https://console.groq.com/keys
-2. Klucz podajesz przy uruchomieniu przez `--dart-define=GROQ_API_KEY=...`.
+2. Klucz podajesz przy uruchomieniu przez `--dart-define=GROQ_API_KEY=...`
+   (w komendach ponizej wstawiasz go zamiast `twoj_klucz`).
 
 WAZNE: klucza nie umieszczaj w kodzie ani w repozytorium. Podawaj go tylko w
 komendzie uruchomieniowej. Bez klucza aplikacja dziala (skan, wyszukiwanie,
 dane produktu), ale funkcje AI zglaszaja "Brak klucza API".
 
-## Pobranie zaleznosci
+## Uruchomienie od zera
 
-```
+Ponizej dwie kompletne, niezalezne sciezki - wybierz jedna zaleznie od powloki.
+Kazda prowadzi od zera (bez zainstalowanego Fluttera) do dzialajacej aplikacji.
+
+- Sciezka A - PowerShell (Windows)
+- Sciezka B - Bash (Git Bash na Windows, Linux, macOS)
+
+Warunek wstepny dla obu: zainstalowany Git. Windows:
+https://git-scm.com/download/win (instalator zawiera tez Git Bash). Linux:
+`sudo apt install git`. macOS: `brew install git`. Sprawdzenie: `git --version`.
+
+### Sciezka A - PowerShell (Windows)
+
+Otworz PowerShell i wykonaj po kolei:
+
+```powershell
+# 1. Sklonuj repozytorium aplikacji i wejdz do katalogu
+git clone https://github.com/WiktorCzarnota/Frapi.git
+cd Frapi
+
+# 2. Pobierz Flutter (kanal stable) i dodaj do PATH biezacej sesji
+git clone https://github.com/flutter/flutter.git -b stable "$HOME\flutter"
+$env:Path = "$HOME\flutter\bin;$env:Path"
+
+# 3. Sprawdz instalacje (wypisze wersje i ewentualne braki)
+flutter --version
+flutter doctor
+
+# 4. Pobierz zaleznosci projektu
 flutter pub get
-```
 
-## Uruchomienie na komputerze
-
-Najszybciej do testow - przegladarka Chrome:
-
-```
+# 5. Uruchom w przegladarce Chrome (wstaw swoj klucz Groq zamiast twoj_klucz)
 flutter run -d chrome --dart-define=GROQ_API_KEY=twoj_klucz
 ```
 
-Windows desktop:
+Uwagi (PowerShell):
+- PATH ustawiony w kroku 2 dziala tylko w biezacym oknie. Aby byl trwaly, dodaj
+  `%USERPROFILE%\flutter\bin` do zmiennej srodowiskowej Path (Ustawienia Windows
+  -> "Edytuj zmienne srodowiskowe systemu") i otworz nowy PowerShell.
+- Windows desktop: `flutter run -d windows --dart-define=GROQ_API_KEY=twoj_klucz`
+  (skan kamera nie dziala na desktopie - do testu skanu uzyj Chrome lub telefonu).
+- Alternatywa bez klonowania Fluttera: pobierz ZIP ze strony
+  https://docs.flutter.dev/get-started/install/windows, rozpakuj do
+  `C:\src\flutter` i dodaj `C:\src\flutter\bin` do Path.
 
-```
-flutter run -d windows --dart-define=GROQ_API_KEY=twoj_klucz
+### Sciezka B - Bash (Git Bash / Linux / macOS)
+
+Otworz terminal Bash i wykonaj po kolei:
+
+```bash
+# 1. Sklonuj repozytorium aplikacji i wejdz do katalogu
+git clone https://github.com/WiktorCzarnota/Frapi.git
+cd Frapi
+
+# 2. Pobierz Flutter (kanal stable) i dodaj do PATH biezacej sesji
+git clone https://github.com/flutter/flutter.git -b stable "$HOME/flutter"
+export PATH="$HOME/flutter/bin:$PATH"
+
+# 3. Sprawdz instalacje (wypisze wersje i ewentualne braki)
+flutter --version
+flutter doctor
+
+# 4. Pobierz zaleznosci projektu
+flutter pub get
+
+# 5. Uruchom w przegladarce Chrome (wstaw swoj klucz Groq zamiast twoj_klucz)
+flutter run -d chrome --dart-define=GROQ_API_KEY=twoj_klucz
 ```
 
-Uwagi:
-- Skan kamera nie dziala na Windows desktop (plugin nie wspiera tej platformy) -
-  do testow skanu uzyj Chrome (localhost) lub telefonu. Reszta funkcji dziala.
-- W trakcie dzialania: `r` = hot reload, `R` = hot restart, `q` = wyjscie.
+Uwagi (Bash):
+- PATH ustawiony w kroku 2 dziala tylko w biezacej sesji. Aby byl trwaly, dopisz
+  `export PATH="$HOME/flutter/bin:$PATH"` do `~/.bashrc` (lub `~/.zshrc`) i otworz
+  nowy terminal.
+- Windows desktop (Git Bash):
+  `flutter run -d windows --dart-define=GROQ_API_KEY=twoj_klucz`.
+- Na Linux/macOS `flutter doctor` moze wskazac dodatkowe zaleznosci systemowe.
 
 ## Uruchomienie na telefonie (Android)
 
+Wymaga zainstalowanego Android SDK (dociaga je Android Studio) oraz akceptacji
+licencji: `flutter doctor --android-licenses`.
+
 ### Wariant 1: przez USB (z hot reload)
 
-1. Zainstaluj Android Studio (dociaga Android SDK) i zaakceptuj licencje:
-   ```
-   flutter doctor --android-licenses
-   ```
-2. W telefonie wlacz Opcje programistyczne (7x stuknij "Numer kompilacji")
+1. W telefonie wlacz Opcje programistyczne (7x stuknij "Numer kompilacji")
    i wlacz "Debugowanie USB".
-3. Podlacz telefon kablem, na telefonie zezwol na debugowanie USB.
-4. Sprawdz i uruchom:
+2. Podlacz telefon kablem, na telefonie zezwol na debugowanie USB.
+3. Sprawdz i uruchom:
    ```
    flutter devices
    flutter run -d <id-telefonu> --dart-define=GROQ_API_KEY=twoj_klucz
@@ -203,7 +151,8 @@ Uwagi:
    zachowuje dane (profil, historia).
 
 Przy pierwszym uruchomieniu aplikacja poprosi o zgode na aparat (skan kodu,
-zdjecie etykiety).
+zdjecie etykiety). W trakcie dzialania: `r` = hot reload, `R` = hot restart,
+`q` = wyjscie.
 
 ## Testy i jakosc kodu
 
@@ -220,4 +169,3 @@ dart format .       # formatowanie
 - Open Food Facts miewa niepelne dane, a polskie produkty bywaja slabo pokryte -
   stad opcja dodania produktu ze zdjecia etykiety.
 - Skan kodu kamera dziala na Androidzie i w przegladarce; nie na Windows desktop.
-
