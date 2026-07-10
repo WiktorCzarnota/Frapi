@@ -38,15 +38,19 @@ dwoch powlok: PowerShell (Windows) oraz Bash (Git Bash na Windows, Linux, macOS)
 Same komendy Fluttera sa identyczne w obu - rozni sie glownie instalacja i
 ustawianie zmiennej PATH.
 
-### 1. Zainstaluj Git
+### Klucz API (Groq) - wymagany do funkcji AI
 
-- Windows: https://git-scm.com/download/win (zawiera tez Git Bash)
-- Linux: `sudo apt install git`
-- macOS: `brew install git`
+Funkcje AI (analiza, zamienniki, odczyt etykiety, podsumowanie porownania)
+wymagaja klucza Groq. Klucz jest darmowy i dziala w Polsce bez karty.
 
-Sprawdzenie: `git --version`
+1. Zaloz konto i wygeneruj klucz: https://console.groq.com/keys
+2. Klucz podajesz przy uruchomieniu przez `--dart-define=GROQ_API_KEY=...`.
 
-### 2. Sklonuj repozytorium
+WAZNE: klucza nie umieszczaj w kodzie ani w repozytorium. Podawaj go tylko w
+komendzie uruchomieniowej. Bez klucza aplikacja dziala (skan, wyszukiwanie,
+dane produktu), ale funkcje AI zglaszaja "Brak klucza API".
+
+### 1. Sklonuj repozytorium
 
 To samo w PowerShell i Bash (podmien adres na adres swojego repozytorium):
 
@@ -55,7 +59,7 @@ git clone https://github.com/WiktorCzarnota/frapi.git
 cd frapi
 ```
 
-### 3. Pobierz Flutter z internetu
+### 2. Pobierz Flutter z internetu
 
 Najprosciej pobrac stabilny kanal Fluttera przez Git.
 
@@ -95,7 +99,7 @@ jest Android SDK - instaluje sie go razem z Android Studio
 `flutter doctor --android-licenses`. Do uruchomienia w przegladarce ani na Windows
 desktop Android SDK nie jest potrzebny.
 
-### 4. Pobierz zaleznosci projektu
+### 3. Pobierz zaleznosci projektu
 
 W katalogu projektu (obie powloki):
 
@@ -103,13 +107,13 @@ W katalogu projektu (obie powloki):
 flutter pub get
 ```
 
-### 5. Przygotuj klucz API Groq
+### 4. Przygotuj klucz API Groq
 
 Klucz jest darmowy (https://console.groq.com/keys) i wymagany do funkcji AI.
 Podajesz go przy uruchamianiu przez `--dart-define` (patrz krok 6 oraz sekcja
 "Klucz API (Groq)" nizej).
 
-### 6. Uruchom aplikacje
+### 5. Uruchom aplikacje
 
 Najszybciej w przegladarce Chrome (komenda taka sama w PowerShell i Bash):
 
